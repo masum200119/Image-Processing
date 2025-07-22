@@ -1,0 +1,164 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\renewcommand{\thesection}{\Roman{section}}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{algorithm}
+\usepackage[usenames, dvipsnames]{xcolor}
+\usepackage{algorithmic}
+\usepackage{colortbl}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{adjustbox}
+\usepackage{hyperref,graphicx,color,float}
+\bibliographystyle{unsrt}
+\definecolor{myblue}{RGB}{10, 150, 200}
+
+\usepackage{cite}
+\usepackage{multirow}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{comment}
+\definecolor{highlightColor}{HTML}{E6FFE6}
+
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+    
+\fancypagestyle{firstpage}{
+  \fancyhf{} % Clear all header and footer fields
+  \fancyhead[L]{\small 2025 International Conference on Quantum Photonics, Artificial Intelligence, and Networking (QPAIN) \\ 31 July – 2 August 2025, Rangpur, Bangladesh}
+  \fancyfoot[L]{\small 979-8-3315-9694-1/25/\$31.00 \copyright2025 IEEE} % Left-align the footer
+  \renewcommand{\headrulewidth}{0pt} % Remove the header rule
+  \renewcommand{\footrulewidth}{0pt} % Remove the footer rule
+}
+
+\pagestyle{plain} % Apply plain style to other pages
+
+\title{Identifying Critical Factors in Road Accidents: A 
+Machine Learning Study on Vehicular and Temporal 
+Influence}
+
+\author{
+    \IEEEauthorblockN{
+        MD. Tahidul Islam\textsuperscript{1}, 
+        Md. Abu Johab\textsuperscript{2}, 
+        Md. Roton Ahmed\textsuperscript{3}, \\
+        Md. Nayem Hossain\textsuperscript{4} 
+        Nakib Aman\textsuperscript{5} 
+    }
+    \IEEEauthorblockA{
+        \textsuperscript{1,2,3,4}Department of Computer Science and Engineering, Pabna Uiversity of Science and Technology \\
+        Pabna, 6600, Bangladesh \\
+        \textsuperscript{4}Department of Civil Engineering, Pabna Uiversity of Science and Technology \\
+        Pabna, 6600, Bangladesh\\
+        Email: \textsuperscript{1}billahmasum124@yahoo.com,
+         \textsuperscript{2}abujohab.cse.pust@gmail.com, 
+          \textsuperscript{3}rkroton43@gmail.com, \\
+          \textsuperscript{4}nayemkhan3355@gmail.com, 
+        \textsuperscript{5}nakibaman@gmail.com
+    }
+}
+
+\begin{document}
+\maketitle
+\thispagestyle{firstpage} % Apply the footer only on the first page
+
+\begin{abstract}
+The importance of road safety increases with the increase in traffic and industrial expansion. There is a lack of research on road accidents on this major road in Bangladesh, despite its significant importance and traffic volume. This paper deals with the analysis of accident data from Pabna-Ishwardi, Ruppur-Dashuria Highway, a very important route to support logistics for the Ruppur Nuclear Power Plant. Decision Tree Classifier, which was chosen and evaluated using PyCaret, gave the best result with an accuracy of 76\%, AUC of 0.1000, F1 score of 0.7399, and recall 0.7600. The Dummy Classifier scored a little lower with an F1 score of 0.6589, though performing similarly. The model identifies "Time" and "Vehicular Involvement" as major causes of collisions and gives practical advice that could reduce collision rates and increase safety both for cars and pedestrians along this important corridor.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Road accident, Machine learning, PyCaret, Decision Tree, Road safety.
+\end{IEEEkeywords}
+
+\section{Introduction}
+Road safety is one of the fields of sustainable development in the case of regions with rapidly developing industry and increasing road transport. The only way to identify risk variables, understand the trend of accidents, and provide specific measures to reduce hazards is to analyze accidents. But 67\% of Bangladesh’s population resides in rural areas, but AI research focuses overwhelmingly on urban centers like Dhaka\cite{sadeek2020development,ahmed2024ai}. There is no major focus on other areas except Dhaka.  No studies explicitly tailor AI algorithms to Pabna’s unstructured roads or rural areas with unique road geometries. Although the majority of studies concentrate on determining the causes of traffic accidents and forecasting their severity, they do not offer workable or empirically based engineering solutions. Furthermore, it was noted that the articles do not compare the elements that contribute to accident severity in two or more different locations.  This study conducts a small amount of research on accident analysis in two or more areas.
+
+AI techniques, mainly machine learning models, such as decision trees, random forests, and gradient boosting machines, are widely used to predict traffic accidents based on several variables like accident severity, number of victims, and vehicle data. These models have achieved respectable levels of accident prediction accuracy, and random forests are among the most used because of their ability to handle complicated datasets \cite{pourroostaei2023road,siswanto2023artificial,nandhiniroad,panda2023predicting}. In order to improve safety and aid in accident detection, On-board Vehicle Motion Sensors (OVMS), such as Acceleration Sensors (AS), Wheel Velocity Sensors (WVS), Gravity Sensors (GS), and Yaw Rate Sensors (YRS), are becoming more and more common in modern cars. In \cite{bahasan2023ai}, an AI-based accident detection system is proposed that uses the Extended Kalman Filter (EKF) technique to integrate GNSS and OVMS. The vehicle positioning algorithm proposed in \cite{han2019performance}, which integrates GNSS with wheel speed, yaw rate, and gravity sensors, effectively compensates for GNSS limitations in various driving environments without needing a low-cost inertial measurement unit. 
+
+In this regard, Pabna-Ishwardi, Ruppur-Dashuria Highway is an important transit route in Bangladesh. Although the highway is supposed to encourage regional economy and communication, it is an important route for industrial logistics, especially for the transportation of supplies to the Ruppur Nuclear Power Plant. However, with strategic importance comes a number of drawbacks—the increasing quantity of diversified traffic has led to a marked rise in accidents, putting both public safety and economic productivity at risk. To address these challenges, this research study applies machine learning techniques to accident data analysis for the identification of ``Cause of Accident.'' 
+
+After rigorous data preprocessing, which includes cleaning, normalization, and feature engineering, along with model selection using PyCaret, the Decision Tree Classifier proved to be the best among them. It achieved an AUC of 0.1000, an F1 score of 0.7399, and a recall of 0.7600. Furthermore, the analysis revealed that ``Time'' and ``Vehicular Involvement'' are the most influential factors, highlighting the importance of understanding accident causation. The results of this investigation offer valuable insights for the development of evidence-based interventions that will improve road safety along this critical highway. This paper is organized as follows: Section~2 reviews related works on accident analysis, while Section~3 outlines the key stages of the proposed methodology. Section~4 discusses the evaluation results, Section~5 explores future work, and Section~6 concludes the paper.
+
+\section{Literate Review}
+The field of accident analysis is crucial for maintaining public safety, lowering the number of fatalities, and minimizing property damage in a variety of industries, such as manufacturing, transportation, and construction. In order to comprehend the fundamental causes of accidents, forecast future occurrences, and suggest practical preventative actions, researchers have investigated a variety of approaches over the years. The main approaches, trends, and discoveries in the subject of accident analysis are examined in this survey of the literature. In occupational safety, enhanced machine learning methods like PSO-based SVM can better and more accurately predict accident consequences like injury, near miss, and damage to property, as revealed by Sarkar et al.\cite{sarkar2019application}. 
+
+Elahi et al. \cite{elahi2014computer} suggested a way to adopt vision-based methods in the context of Bangladesh in an attempt to identify the likelihood of traffic accidents.  They've utilized 85\% accuracy was attained in some cases using roadside video data as training materials. To determine traffic accident trends, Satu et al. \cite{satu2017mining} utilized a collection of decision tree induction methods for examining 892 traffic accidents on Bangladesh's N5 National Highway.  Moreover, they establish rules for trees to reduce traffic accidents on the highway.  On the other hand, other industrialized nations have a wealth of state-of-the-art and useful research in this area. Yisheng et al. \cite{lv2009real} explained how a momentary breakdown in traffic flow is related to the likelihood of a high-way traffic accident.  It details the research process on the prediction of the likelihood of traffic accidents using real-time traffic data and the k-nearest neighbour algorithm.  The k-nearest neighbour algorithm is used for the first time in this real-time traffic accident detection.The KNN approach that uses the standard C means clustering algorithm is shown in this result. Using machine learning techniques, Bülbül et al. \cite{bulbul2016analysis} investigated the situation of traffic accidents in Istanbul.
+They used the CART algorithm to predict the risk of accidents, and their precision was over 81.5\%.  Nandurge and Dharwadkar used the K-means clustering algorithm and association rule mining, two data mining methods, to identify the most significant variables related to road accidents in \cite{nandurge2017analyzing}.
+
+The time of day has an important contribution to RTAs.  W. Hao et al. \cite{hao2016effect} found that over-speeding of vehicles is the principal cause of accidents during the morning.  Indian According to statistics, 60\% of accidents normally happen at night because of low visibility of roads, fatigue of drivers, and poor performance \cite{pitchipoo2014analysis}. A.M. is the hour or four consecutive 15-minute time slots during the morning hours when traffic is at its peak \cite{lawinsider_ampeakhour}. To forecast the correlation between the causes of accidents and their severity, Eboli et al.\cite{eboli2020factors} used an Italian accident database.  They discovered a number of variables that were positively connected with accident severity. They also suggested using logistic regression to ascertain how a component affects the severity of an accident.
+ In order to determine the important elements influencing accident severity in the particular region, Ma et al.\cite{ma2021analytic} worked using a Chinese accident database.  In order to forecast accident severity based on several characteristics, they used a deep learning technique known as the stacked sparse autoencoder (SSAE).  They also used Shapley, an Explainable AI (XAI) technique, to examine their results. In \cite{abdel2005exploring}, M. Abdel-Aty and J. Keller stated some important contributing factors to severe accidents, especially in the area around signalized intersections.  Other than identifying accident-related determining factors, the paper also provided practical suggestions on how to reduce the severity of accidents.
+The authors employed the Hierarchical Tree-Based Regression (HTBR) technique to identify the variables related to each degree of harshness.
+Santos et al. \cite{santos2021machine} used a 2016–2019 accident dataset of Setubal, Portugal.  The study presented a predictive machine learning task and identified factors responsible for traffic accidents.  Supervised and unsupervised machine learning algorithms were both employed in their study.  DBSCAN and hierarchical clustering were employed as unsupervised algorithms, and Random Forests and Decision Trees were employed as supervised algorithms, among others.
+
+In order to determine the effect of road problems on accident severity, Esmaeili et al.\cite{esmaeili2012determining} employed logistic regression based on the condition of the vehicle following an accident. The application of Artificial Intelligence in analyzing bus
+accidents to reduce the accident rate and making it safer on
+the roads is one of the developing fields. Artificial intelligence
+techniques, under different models and methods, are put in
+place for the prediction and prevention, apart from assessment,
+of bus-related incidents.
+
+\section{Methodology}
+Describe your methods. Explain how you collect or generate data, the algorithms or analysis you use, and any theoretical framework. Include a sample table (Table~\ref{tab:sampletable}) and a placeholder figure (Figure~\ref{fig:samplefig}) as examples.
+
+\subsection{Data Collection}
+Explain your data sources or experimental setup here.
+
+\subsection{Analysis}
+Describe any models, tools, or analyses applied. For example, "A baseline model was compared with advanced algorithms as described by Author et al.~\cite{b4}."
+
+\begin{table}[htbp]
+\caption{Sample Placeholder Table}
+\label{tab:sampletable}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Method} & \textbf{Accuracy (\%)} & \textbf{Reference} \\
+\hline
+Method A & 90.2 & \cite{ref4} \\
+Method B & 92.5 & \cite{ref5} \\
+Method C & 88.9 & \cite{ref6} \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.3\textwidth]{placeholder_image.jpg}
+\caption{Sample Placeholder Image or Diagram}
+\label{fig:samplefig}
+\end{figure}
+
+\section{Results and Discussions}
+Discuss your results. Use tables, charts, and figures as needed. Refer to findings with citation~\cite{b6}.
+
+\section{Discussion}
+Interpret your results. Highlight implications, limitations, and possible improvements. Mention relevant related work for context.
+
+\section{Conclusion}
+Summarize the paper, key results, and possible future work. This section wraps up the main contributions and suggests areas for additional research.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\bibliographystyle{IEEEtran}
+\bibliography{Ref}
+\end{document}

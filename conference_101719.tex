@@ -1,0 +1,268 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Light Gradient Boosting Classifier for Real-Time Air Quality Monitoring
+}
+
+\maketitle
+
+\begin{abstract}
+Human health and the ecosystem depend critically on air pollution, which also greatly influences public well-being and ecological stability. The effects on environmental damage, cardiovascular problems, and respiratory disorders highlight the need for air quality forecast in order to apply preventive policies. Therefore, implementing preventative actions to reduce the detrimental effects of air quality depends on its accurate prediction.  This study explores the application of machine learning techniques to forecast air quality by means of historical pollution data analysis combined with meteorological considerations in New Delhi, India. Several models—including random forests, neural networks, and decision trees—were run and assessed in terms of predicted accuracy. The results show that machine learning is a useful tool for air pollution level prediction, enabling quick response to reduce environmental hazards and health concerns.  Reaching an extraordinary accuracy of 99.03\%, the Light Gradient Boosting Machine (LightGBM) stood out as the best performer among the evaluated models. This emphasizes its capacity for consistent air quality prediction, which provides vital data for environmental groups and decision-makers to create effective pollution control strategies. The study emphasizes the need for applying innovative machine learning techniques for public health safety and sustainable urban development.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Air pollution, AQI, PyCaret, LightGBM, Machine Learning, Public health.
+\end{IEEEkeywords}
+
+\section{Introduction}
+The frequent growth of urbanization and industrialization has significantly increased air pollution levels over the world, specifically in highly populated areas. At present times, air pollution has become a severe environmental and public health concern. New Delhi, the capital of India, is among the most polluted cities worldwide where the pollutant concentrations mostly exceed the tolerance levels. Life expectancy has decreased as a result of this awful circumstance, and respiratory and cardiovascular diseases are becoming more common among its citizens. Air pollution is caused by various human-caused sources such as industrial activities, vehicular emissions, etc. The major pollutants contributing to subsiding air quality include Particulate Matter (PM\textsubscript{2.5}), PM\textsubscript{10}, NO, NO\textsubscript{2}, NO\textsubscript{x}, NH\textsubscript{3}, SO\textsubscript{2}, CO, Ozone (O\textsubscript{3}), Benzene, Toluene, Xylene, etc. The Air Quality Index (AQI) acts as a standard indicator for the scoring of the pollution amount and its health effects. The accurate AQI forecast can play an instrumental role in reducing health hazards and effectively applying subsidence methods. Machine Learning (ML) can analyze massive and complicated data and find patterns; it has been recognized as a powerful technique for predicting air quality levels. By gradually learning from real-time data, a machine learning algorithm continuously enhances its performance. Pollutant concentrations have been predicted using a variety of machine learning approaches, including support vector machines, neural networks, decision trees, random forests, gradient boosting, linear regression, stochastic gradient descent regression, and gradient boosting.
+
+In previous studies, statistical models, mathematical models, and machine learning models are commonly used to classify and forecast air pollution. RNN classified ozone with an accuracy of 81\%~\cite{b1}. RNN was also used to analyze PM\textsubscript{2.5} and PM\textsubscript{10}~\cite{b2}, with 95\% accuracy~\cite{b3}. Support Vector Regression and an ensemble model were used to classify PM\textsubscript{10} with an accuracy of 96\%. Finally, in~\cite{b4}, it was stated that many ML models were used for air pollution classification, where logistic regression was reported to achieve an accuracy of 93\%. On the other hand, our proposed ML model attains an astonishing accuracy of 99.03\% using meteorological parameters like Air Temperature (AT), Relative Humidity (RH), Wind Velocity (WS), Wind Direction (WD), Solar Radiation (SR), Barometric Pressure (BP), along with pollutant concentrations (PM\textsubscript{2.5}, PM\textsubscript{10}, NO, NO\textsubscript{2}, NO\textsubscript{x}, NH\textsubscript{3}, SO\textsubscript{2}, CO, Ozone (O\textsubscript{3}), Benzene, Toluene, and Xylene). The main aim of this paper is to develop the best-suited ML model for the accurate prediction of AQI. This research focuses on a comparative study among various ML models to determine the best model that can provide the highest level of accuracy and reliability in AQI prediction. A well-optimized AQI forecasting model may contribute to better air pollution control by enabling authorities to proactively take efficient measures in mitigating environmental hazards. Moreover, this will also enable public health management to give timely warnings and insights through proper predictions, enabling individuals and policymakers to make informed decisions in order to reduce exposure to harmful air pollutants.
+
+\section{Literature Review}
+Pollutant concentrations in metropolitan areas can be assessed and predicted using a variety of air quality prediction models. Historically, predictions were made using statistical and numerical models, such as models for atmospheric dispersion and chemical transport. Machine learning approaches are becoming the most widely used methods in air quality prediction models. Our model offers an efficient method for assessing air quality by using machine learning to divide it into four categories: Good, Moderate, Bad, and Very Good.
+
+Using meteorological features like wind speed (WS), vertical wind speed (VWS), wind direction (WD), temperature (Temp), and relative humidity (RH) as input parameters, a variety of machine learning models—including Linear Regression (LR), Stochastic Gradient Descent (SGD) Regression, Random Forest Regression (RFR), Decision Tree Regression (DTR), Support Vector Regression (SVR), Multi-layer Perceptron (MLP) or Neural Networks, Gradient Boosting Regression (GBR), and Adaptive Boosting Regression (ABR)—are used to predict the levels of pollutants like CO, NO\textsubscript{2}, O\textsubscript{3}, SO\textsubscript{2}, PM\textsubscript{10}, and PM\textsubscript{2.5} at three monitoring sites spread across various districts of New Delhi~\cite{b5,b6}. The foundation of statistical models is the method of learning from historical data and then applying this knowledge to forecast how desired variables will behave in the future. These models are said to be quite accurate. Auto-Regressive Moving Average (ARMA) and Multiple Linear Regression (MLR) are two prominent statistical models that have been used to forecast air quality~\cite{b7,b8}. The Air Quality Index (AQI) is divided into three categories: Good, Moderate, and Unhealthy, according to the quantities of PM\textsubscript{10}, CO, SO\textsubscript{2}, O\textsubscript{3}, and NO\textsubscript{2} in unbalanced samples. With 99\% accuracy, 98\% precision, and 98\% recall, the Decision Tree classifier performs better than other machine learning methods in this classification challenge~\cite{b9}. Major pollutants including NO, NO\textsubscript{2}, CO, SO\textsubscript{2}, O\textsubscript{3}, NH\textsubscript{3}, NO\textsubscript{x}, PM\textsubscript{2.5}, PM\textsubscript{10}, Benzene, Toluene, and Xylene can be used to forecast air quality index values using machine learning methods like Decision Tree, Random Forest, Support Vector Machine, and Artificial Neural Network. The outcomes demonstrate the suitability of using machine-learning methods to forecast the AQI~\cite{b10}. Argumentation has been developed that the inclusion of ensemble learning methods with a deep learning model, which covers the GRUs-based architecture, enhances precision in forecasting beyond conventional approaches. Compared to traditional ensemble learning, the MLEG-RU considers an ensemble learning model by combining multiple deep learning models for yielding better air quality forecasting accuracy~\cite{b11}. A fine-grained prediction approach based on deep learning and multisource data can achieve high accuracy for PM\textsubscript{2.5} concentration prediction in a 24-hour period and, therefore, improve people's daily life and bring influence to policy. For short-term PM\textsubscript{2.5} concentration forecasting, compared with other models, the hybrid MIC-CEEMDAN-CNN-BiGRU model increases accuracy by more than 5 percentage points~\cite{b12,b13}. In comparison to existing image identification models, YOLO-AQI, a real-time and picture-based deep learning model, calculates the air quality index (AQI) in remote places with 75.15\% accuracy and 71.1\% running speed~\cite{b14}.
+
+\section{Methodology}
+The current study on the proposed efficient predictive model follows a structured machine learning workflow shown in the Fig. 1. The dataset is collected from an Indian website
+\href{https://www.aqi.in/dashboard/india/delhi/new-delhi}. Further, data preprocessing techniques are performed to enhance data quality and consistency; these may include cleaning and normalization. Then, feature selection will retain the most relevant attributes based on dimension reduction and feature extraction methods. The refined dataset is then divided into training and testing subsets, on which a machine learning algorithm is applied to train the predictive model. At the end, the model is evaluated with a separate test dataset for accuracy and reliability, developing the final model for predictions.
+
+\begin{figure}[htbp]
+    \vspace{-12pt}
+    \centering
+    \includegraphics[width=0.95\columnwidth]{workflow.png}
+    \vspace{-150pt}
+    \caption{Workflow of the proposed system.}
+    \label{fig:workflow}
+    \vspace{-10pt}
+\end{figure}
+
+\subsection{Data Collection}
+\begin{itemize}
+    \item Sources of Data: The dataset used in this study came from several air quality monitoring stations placed deliberately all throughout New Delhi, a region experiencing major pollution problems. Data collection included IoT-enabled air and noise pollution monitoring systems, official government air quality monitoring agencies including the Central Pollution Control Board (CPCB), and additional meteorological data obtained from satellite observations and weather APIs.
+    
+    \item Pollutants and Meteorological Factors: The investigation of main air pollutants—which include fine particulate matter (PM$_{2.5}$ and PM$_{10}$), carbon monoxide (CO), nitrogen dioxide (NO$_2$), sulfur dioxide (SO$_2$), ozone (O$_3$), ammonia (NH$_3$), and volatile organic compounds (VOCs)—forms the focus of this work because they greatly affect variations in air quality. Independent elements included climatic variables such as air temperature, wind speed, wind direction, relative humidity, solar radiation, and barometric pressure.
+\end{itemize}
+
+\subsection{Data Preprocessing}\label{AA}
+Many preprocessing techniques were applied to ensure the dependability of the data.
+\begin{itemize}
+    \item Handling Missing Values: Using statistical imputation and deduplication techniques helped missing and duplicate entries to be methodically found and corrected. Standardizing time-series data allowed one to accomplish the alignment of pollution concentration measurements over several measuring intervals. To help with anomalies, outliers were found and replaced using the interquartile range (IQR) approach. 
+
+    \vspace{10pt}
+    Mean/Median Imputation:
+    \begin{equation}
+    x_{\text{imputed}} = \frac{1}{N} \sum_{i=1}^{N} x_i \tag{1}
+    \end{equation}
+
+    \vspace{10pt}
+    Interpolation for Time-Series Data:
+    \begin{equation}
+    x_t = x_{t-1} + \frac{x_{t+1} - x_{t-1}}{2} \tag{2}
+    \end{equation}
+
+    \item Feature Engineering: To increase predicted accuracy, new variables like pollution level degrees and the Air Quality Index (AQI) were created. For categorical features, one-hot encoding was applied to translate them into a numerical form therefore facilitating seamless inclusion into machine learning models. Integration of lag characteristics reflecting previous pollution trends improved the forecasting power of the models. 
+
+    \vspace{10pt}
+    Air Quality Index (AQI) Calculation:
+    \begin{equation}
+    \text{AQI} = \max \left( \frac{c_i}{c_{\text{threshold}}} \times 100 \right) \tag{3}
+    \end{equation}
+    
+    Where \( c_i \) is the pollutant concentration and \( c_{\text{threshold}} \) is the standard limit.
+    
+    \vspace{10pt}
+    Lag Features for Time-Series Forecasting:
+    \begin{equation}
+    x_t = f \left( x_{t-1}, x_{t-2}, x_{t-3}, \dots, x_{t-n} \right) \tag{4}
+    \end{equation}
+
+    \item Data Normalization and Scaling: Introduced to ensure uniformity in model training was a normalizing stage. By means of the Min-Max scaling method, pollution concentration estimates were adjusted to a range between 0 and 1, therefore eliminating any biases arising from different measuring systems. The computed normalized variable x’ was done as follows:
+
+    \begin{equation}
+    x' = \frac{x - x_{\text{min}}}{x_{\text{max}} - x_{\text{min}}} \tag{5}
+    \end{equation}
+    \vspace{5pt}
+    
+    where \( x \) represents the original pollution concentration, and \( x_{\text{max}} \) and \( x_{\text{min}} \) are the maximum and minimum recorded values, respectively.
+    
+\end{itemize}
+
+\subsection{Model Development}\label{AA}
+PyCaret was used to build a machine learning-based classification system, automating the model selection and optimization process. The following framework was used:
+
+\begin{verbatim}
+from pycaret.classification import *
+clf_setup = setup(
+    data=data,
+    target='Air_Quality_Class',
+    session_id=42,
+    normalize=True,
+    feature_selection=True,
+    remove_multicollinearity=True
+)
+\end{verbatim}
+
+Different categorizing techniques were evaluated using established performance criteria using the \texttt{compare\_models()} method. The identified top-performing models consist:
+
+\begin{itemize}
+    \item Light Gradient Boosting Machine (LGBMClassifier) (selected as the most effective model).
+    \item Decision Tree Classifier.
+    \item Extreme Gradient Boosting.
+    \item CatBoost Classifier.
+    \item Random Forest Classifier.
+\end{itemize}
+
+By varying the learning rate, number of estimators, and tree depth, hyperparameter tuning sought to maximize prediction performance. Reducing misclassification errors and maximizing model accuracy were goals of the fine-tuning process. Retrained with the improved dataset, the final optimal model augmented generalization and robustness.
+
+\subsection{Model Evaluation}
+
+Several evaluation criteria were used in order to ensure the dependability of the model by means of performance assessment. While the ROC-AUC curve provided understanding of the model's ability to distinguish between different air quality levels, the confusion matrix was used to show classification accuracy. Moreover, the precision-recall curve was investigated to assess for every class the predictive capacity of the model.
+
+Key predictors of air pollution were found by means of an analysis of feature significance. The study found that the three \(\text{PM}_{2.5}\), \(\text{PM}_{10}\), and \(\text{O}_3\) values most affected the air quality classification. Analyzing the impact of every feature on the model's predictions using Shapley Additive Explanations (SHAP) helped to validate these findings.
+
+    Accuracy:
+        \begin{equation}
+        \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN} \tag{6}
+        \end{equation}
+
+    Precision:
+        \begin{equation}
+        \text{Precision} = \frac{TP}{TP + FP} \tag{7}
+        \end{equation}
+    
+    Recall:
+        \begin{equation}
+        \text{Recall} = \frac{TP}{TP + FN} \tag{8}
+        \end{equation}
+\vspace{10pt}
+
+\section{Results And Performance Analysis}
+The results of the experiments used Accuracy, AUC, Recall, and Precision in evaluating the performance of various models with a different machine learning model; such a comparison will help in finding the best classifier for the task. Specific findings are presented in the following Table I.
+
+\begin{table}[htbp]
+\centering
+\caption{\text{Performance Table of Different Classifiers}}
+\setlength{\tabcolsep}{4pt} % Adjust column spacing
+\renewcommand{\arraystretch}{1.2} % Adjust row height
+\begin{tabular}{p{4cm} c c c c} % Set width for the model column
+\hline
+\textbf{Model} & \textbf{Accuracy} & \textbf{AUC} & \textbf{Recall} & \textbf{Prec.} \\
+\hline
+Light Gradient Boosting Machine & 0.9903 & 0.9999 & 0.9903 & 0.9892 \\ 
+Decision Tree Classifier        & 0.9890 & 0.9927 & 0.9890 & 0.9898 \\
+Extreme Gradient Boosting       & 0.9876 & 0.9995 & 0.9876 & 0.9873 \\
+CatBoost Classifier             & 0.9876 & 0.9997 & 0.9876 & 0.9870 \\
+Random Forest Classifier        & 0.9814 & 0.9991 & 0.9814 & 0.9776 \\
+\hline
+\end{tabular}
+\label{tab:performance}
+\end{table}
+
+The table contrasts machine learning models based on precision, recall, accuracy, and AUC. The Random Forest gets 0.9814, whereas LightGBM has the highest accuracy (0.9903).
+
+\clearpage
+
+\begin{figure}[htbp]
+    \vspace{0pt}
+    \centering
+    \includegraphics[width=1.0\columnwidth]{Yet.png}
+    \vspace{0pt}
+    \caption{Confusion Matrix of  Light Gradient Boosting Machine Classifier}
+    \label{fig:workflow}
+    \vspace{0pt}
+\end{figure}
+
+The confusion matrix in Fig. 2 shows the performance of the classification done by LGBMClassifier among four different classes. It can be observed that the model correctly classifies all 375 and 126 occurrences of classes 0 and 1, respectively. Accompanied by only three misclassifications into class 1, the model identifies 113 instances that actually belonged to class 2. Similarly, class 3 has two correctly classified instances and three that have been misclassified as class 2. This matrix shows great skill in prediction with an incredibly low error rate to its boast, proving high accuracy and reliability in performing the task given to it.
+
+\begin{figure}[htbp]
+    \vspace{0pt}
+    \centering
+    \includegraphics[width=0.95\columnwidth]{roc.png}
+    \vspace{0pt}
+    \caption{ROC Curve of  Light Gradient Boosting Machine Classifier}
+    \label{fig:workflow}
+    \vspace{0pt}
+\end{figure}
+
+The ROC-AUC curve for the LGBMClassifier in Fig. 3 illustrates its brilliant performance in classifying four classes. Each class curve, 0, 1, 2, and 3, perfectly discriminates from the classes with an AUC of 1.00. What is more, both macro-average and micro-average AUC values are 1.00, further demonstrating the predictive power of the model. The model achieves flawless true positive rates with zero false positives, as indicated by the ideal curve shape that closely hugs the upper-left corner of the plot. This charts how well the classifier can tell apart each target class consistently.
+
+\begin{figure}[htbp]
+    \vspace{0pt}
+    \centering
+    \includegraphics[width=0.95\columnwidth]{pr_sharpened.png}
+    \vspace{0pt}
+    \caption{Precision-Recall Curve of  Light Gradient Boosting Machine Classifier}
+    \label{fig:workflow}
+    \vspace{0pt}
+\end{figure}
+
+The Precision-Recall curve shows in Fig. 4 measures the performance of the model based on recall (the ratio of true positive predictions out of all actual positives) and precision (the ratio of true positive predictions out of all positive predictions. Micro-averaging used in this figure aggregates performance across all classes by summing up true positives, false negatives, and false positives across all classes to calculate metrics globally. The red dashed line, representing the average precision score of the model, is almost flawless at 1.00, further showing that it performs exceptionally well in its predictions and has very high capacity for balancing precision and recall successfully. This shaded area under the curve is the performance given by this curve.
+
+\begin{figure}[htbp]
+    \vspace{0pt}
+    \centering
+    \includegraphics[width=0.95\columnwidth]{shap_importance_ascending.png}
+    \vspace{0pt}
+    \caption{Feature Importance Light Gradient Boosting Machine Classifier}
+    \label{fig:workflow}
+    \vspace{0pt}
+\end{figure}
+
+The feature importance plot by the LGBMClassifier in Fig. 5 shows the impact of different features on the model's predictions. Some critical factors include PM$_{2.5}$ ($\mu g/m^3$), which tops the chart, followed by PM$_{10}$ ($\mu g/m^3$) and Ozone ($\mu g/m^3$), all highly influential in the prediction of results. Another set of influential meteorological data includes RH\% and NO$_2$ ($\mu g/m^2$). On the other hand, features WS (m/s), CO (mg/m$^3$), AT ($^\circ$C), xylene ($\mu g/m^3$), and NH$_3$ ($\mu g/m^3$) are of lesser but significant importance. With regard to their widely known effects on air quality, this graph emphasizes the fact that particulate matter and ozone levels dominate the forecast from this model.
+
+\begin{table}[htbp]
+\caption{Comparison of Performance Metrics for Proposed Model (LGBM) and Previous Studies}
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Metric} & \textbf{\cite{b15}} & \textbf{\cite{b16}} & \textbf{Proposed Model (LGBM)} \\
+\hline
+Accuracy & 97.81\% & 99.90\%(higher) & 99.03\% \\
+\hline
+Recall & 97.28\% & 99.95\% & 99.03\% \\
+\hline
+Precision & 97.22\% & 99.95\% & 98.92\% \\
+\hline
+F1-score & 97.24\% & 99.95\% & 98.97\% \\
+\hline
+\end{tabular}
+\end{table}
+The proposed LGBM model not only achieves strong performance in classification but also highlights how classification algorithms can work effectively, even when applied to datasets originally designed for regression tasks like \cite{b17}. By handling a variety of features more efficiently, the model provides better classification results compared to the previous regression approaches. While the earlier studies focused on regression, our results show that the proposed classification model is highly reliable and accurate across several metrics. This makes it an excellent choice, especially in scenarios where combining different features is key, giving it an edge over traditional regression-based methods.
+\section{Conclusions}
+By means of historical pollution data and meteorological considerations, this study emphasizes the great capacity of machine learning in efficiently forecasting air quality. The results demonstrate that advanced machine learning models including Decision Trees, Random Forests, Neural Networks, and Gradient Boosting techniques can effectively forecast air pollution levels, therefore enabling quick responses to minimize environmental damage and protect public health. With an amazing accuracy of 99.03\%, which emphasizes its strength and dependability for practical air quality monitoring, Light Gradient Boosting Machine (LightGBM) stood out among the models examined as the most effective. Beyond only prediction accuracy, this study emphasizes the crucial role artificial intelligence must play in data management for environmental plans and policy formulation. Acting as an early warning system, these models help authorities to regulate pollution, safeguard public health, and promote sustainable urban development by means of strategic interventions. Future research should explore how deep learning architectures, real-time sensor data, and additional environmental parameters could be combined to raise forecast accuracy, adaptability, and practical applicability. The continuous global threat of air pollution calls for the use of sophisticated forecasting systems, which will be very important in promoting a better, healthier, and more sustainable future.
+
+
+
+
+\begin{thebibliography}{00}
+\bibitem{b1} M. Asghari and H. Nematzadeh, “Predicting air pollution in Tehran: Genetic algorithm and back propagation neural network,” J. AI Data Min., vol. 4, no. 1, pp. 49–54, Jan. 2016, doi: 10.5829/idosi.JAIDM.2016.04.01.06.
+\bibitem{b2} F. Biancofiore et al., “Recursive neural network model for analysis and forecast of PM10 and PM2.5,” Atmospheric Pollut. Res., vol. 8, no. 4, pp. 652–659, Jul. 2017, doi: 10.1016/j.apr.2016.12.014.
+\bibitem{b3} K. Siwek and S. Osowski, “Improving the accuracy of prediction of PM10 pollution by the wavelet transformation and an ensemble of neural predictors,” Eng. Appl. Artif. Intell., vol. 25, no. 6, pp. 1246–1258, Sep. 2012, doi: 10.1016/j.engappai.2011.10.013.
+\bibitem{b4} R. Mangayarkarasi, C. Vanmathi, M. Zubair Khan, A. Noorwali, R. Jain, and P. Agarwal, “COVID19: Forecasting Air Quality Index and Particulate Matter (PM2.5),” Comput. Mater. Contin., vol. 67, no. 3, pp. 3363–3380, 2021, doi: 10.32604/cmc.2021.014991.
+\bibitem{b5} C. Srivastava, S. Singh, and A. P. Singh, “Estimation of Air Pollution in Delhi Using Machine Learning Techniques,” in 2018 International Conference on Computing, Power and Communication Technologies (GUCON), Greater Noida, Uttar Pradesh, India: IEEE, Sep. 2018, pp. 304–309. doi: 10.1109/GUCON.2018.8675022.
+\bibitem{b6} H. Mahajan and K. Juneja, “Air Pollution Problem in Delhi,” vol. 7, pp. 723–727, 2020.
+\bibitem{b7} S. S. Wulff, “Time Series Analysis: Forecasting and Control, 5th edition,” J. Qual. Technol., Oct. 2017, Accessed: Feb. 06, 2025. [Online]. Available: https://www.tandfonline.com/doi/abs/10.1080/00224065.2017.11918006
+\bibitem{b8} C. Li, N. C. Hsu, and S.-C. Tsay, “A study on the potential applications of satellite data in air quality monitoring and forecasting,” Atmos. Environ., vol. 45, no. 22, pp. 3663–3675, Jul. 2011, doi: 10.1016/j.atmosenv.2011.04.032.
+\bibitem{b9} B. V. Jayadi, M. D. Lauro, Z. Rusdi, and T. Handhayani, “Air Quality Index Classification for Imbalanced Data using Machine Learning Approach,” SISTEMASI, 2024, doi: 10.32520/stmsi.v13i3.3503.
+\bibitem{b10} K. Kekulanadara, B. Kumara, and K. Banujan, “Machine Learning Approach for Predicting Air Quality Index,” 2021 Int. Conf. Decis. Aid Sci. Appl. DASA, pp. 622–626, 2021, doi: 10.1109/DASA53625.2021.9682221.
+\bibitem{b11} C.-Y. Lin, Y.-S. Chang, and S. Abimannan, “Ensemble multifeatured deep learning models for air quality forecasting,” Atmospheric Pollut. Res., vol. 12, 2021, doi: 10.1016/J.APR.2021.03.008.
+\bibitem{b12} X. Wu, J. Zhu, and Q. Wen, “Short-term prediction of PM2.5 concentration by hybrid neural network based on sequence decomposition,” PLOS ONE, vol. 19, 2024, doi: 10.1371/journal.pone.0299603.
+\bibitem{b13} X. Xu, T. Tong, W. Zhang, and L. Meng, “Fine-grained prediction of PM2.5 concentration based on multisource data and deep learning,” Atmospheric Pollut. Res., vol. 11, pp. 1728–1737, 2020, doi: 10.1016/j.apr.2020.06.032.
+\bibitem{b14} Q. Zhang, L. Tian, F. Fu, H. Wu, W. Wei, and X. Liu, “Real‐Time and Image‐Based AQI Estimation Based on Deep Learning,” Adv. Theory Simul., vol. 5, 2022, doi: 10.1002/adts.202100628.
+\bibitem{b15} G. M. Idroes et al., “Urban Air Quality Classification Using Machine Learning Approach to Enhance Environmental Monitoring | Leuser Journal of Environmental Studies”, Accessed: Feb. 17, 2025. [Online]. Available: https://heca-analitika.com/ljes/article/view/99
+\bibitem{b16} A. Attaallah and R. Ahmad Khan, “SMOTEDNN: A Novel Model for Air Pollution Forecasting and AQI Classification,” Comput. Mater. Contin., vol. 71, no. 1, pp. 1403–1425, 2022, doi: 10.32604/cmc.2022.021968.
+\bibitem{b17} C. Srivastava, S. Singh, and A. P. Singh, “Estimation of Air Pollution in Delhi Using Machine Learning Techniques,” in 2018 International Conference on Computing, Power and Communication Technologies (GUCON), Sep. 2018, pp. 304–309. doi: 10.1109/GUCON.2018.8675022.
+\end{thebibliography}
+\end{document}
